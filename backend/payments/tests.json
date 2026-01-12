@@ -1,0 +1,23 @@
+{
+  "tests": [
+    {
+      "name": "Create premium payment",
+      "method": "POST",
+      "path": "/",
+      "body": {
+        "action": "create_payment",
+        "user_id": 1,
+        "payment_type": "premium_subscription",
+        "payment_method": "card",
+        "amount": 350.00
+      },
+      "expectedStatus": 200,
+      "expectedBody": {
+        "success": true,
+        "amount": 350,
+        "payment_url": "string"
+      },
+      "bodyMatcher": "partial"
+    }
+  ]
+}

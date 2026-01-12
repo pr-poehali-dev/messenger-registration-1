@@ -1,54 +1,42 @@
-import { useState } from 'react';
-import { Registration } from '@/components/Registration';
-import { Login } from '@/components/Login';
-import { MessengerApp } from '@/components/MessengerApp';
-
-interface User {
-  phone: string;
-  avatar: string;
-  nickname: string;
-  username: string;
-  isPremium?: boolean;
-}
+import { useState, useEffect } from 'react';
+import Registration from './Registration';
+import Login from './Login';
+import Messenger from './Messenger';
 
 export default function Index() {
-  const [currentView, setCurrentView] = useState<'login' | 'registration' | 'messenger'>('login');
-  const [user, setUser] = useState<User | null>(null);
+  const [view, setView] = useState<'login' | 'register' | 'messenger'>('login');
+  const [user, setUser] = useState<any>(null);
 
-  const handleRegistrationComplete = (userData: User) => {
-    setUser(userData);
-    setCurrentView('messenger');
-  };
+  useEffect(() => {
+    const savedUser = localStorage.getItem('user');
+    if (savedUser) {
+      setUser(JSON.parse(savedUser));
+      setView('messenger');
+    }
+  }, []);
 
-  const handleLoginComplete = (userData: User) => {
+  const handleAuthComplete = (userData: any) => {
     setUser(userData);
-    setCurrentView('messenger');
+    setView('messenger');
   };
 
   const handleLogout = () => {
+    localStorage.removeItem('user');
     setUser(null);
-    setCurrentView('login');
+    setView('login');
   };
 
-  return (
-    <div className="min-h-screen bg-background">
-      {currentView === 'login' && (
-        <Login 
-          onLoginSuccess={handleLoginComplete}
-          onSwitchToRegister={() => setCurrentView('registration')}
-        />
-      )}
-      
-      {currentView === 'registration' && (
-        <Registration 
-          onComplete={handleRegistrationComplete}
-          onSwitchToLogin={() => setCurrentView('login')}
-        />
-      )}
-      
-      {currentView === 'messenger' && user && (
-        <MessengerApp user={user} onLogout={handleLogout} />
-      )}
-    </div>
-  );
+  if (view === 'register') {
+    return <Registration onComplete={handleAuthComplete} />;
+  }
+
+  if (view === 'login') {
+    return <Login onComplete={handleAuthComplete} onRegister={() => setView('register')} />;
+  }
+
+  if (view === 'messenger' && user) {
+    return <Messenger user={user} onLogout={handleLogout} />;
+  }
+
+  return null;
 }

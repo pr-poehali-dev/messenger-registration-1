@@ -1,0 +1,5 @@
+{
+  "payments": "https://functions.poehali.dev/1fc6f7fc-30d4-4613-bec2-17cbd8f2a7cf",
+  "auth": "https://functions.poehali.dev/260a0df5-778b-410b-a24f-edfcac663155",
+  "chats": "https://functions.poehali.dev/eb16627a-c5f8-419f-9501-077dea0dbaa4"
+}

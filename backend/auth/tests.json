@@ -1,0 +1,27 @@
+{
+  "tests": [
+    {
+      "name": "Register new user",
+      "method": "POST",
+      "path": "/",
+      "body": {
+        "action": "register",
+        "phone": "+79991234567",
+        "nickname": "TestUser",
+        "username": "testuser",
+        "avatar_type": "emoji",
+        "avatar_value": "😊"
+      },
+      "expectedStatus": 200,
+      "expectedBody": {
+        "success": true,
+        "user": {
+          "phone": "+79991234567",
+          "nickname": "TestUser",
+          "username": "testuser"
+        }
+      },
+      "bodyMatcher": "partial"
+    }
+  ]
+}
